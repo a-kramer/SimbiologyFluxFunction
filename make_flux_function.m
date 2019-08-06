@@ -6,9 +6,11 @@ function [F,M]=make_flux_function(SimbiologyEquations,varargin)
   %% Usage: [F,M]=make_flux(SimbiologyEquations,[file_name])
   %%
   %% SimbiologyEquations is the text that is returned by simbiology's
-  %% "getequations" if no output arguments are specified, then the
+  %% "getequations".
+  %% If no output arguments are specified, then the
   %% flux function is written into a file (inside the current working
-  %% directory). The filename will be automatically generated; an
+  %% directory).
+  %% The filename will be automatically generated; an
   %% optional second argument to this function (file_name) will
   %% override this.
   
@@ -65,14 +67,16 @@ function [F,M]=make_flux_function(SimbiologyEquations,varargin)
     endif
     fid=fopen(strcat(fname,'.m'),'w');
     fprintf(fid,'function [F]=%s(time,x,p)\n',fname);
-    fprintf(fid,' %%%% Usage [F]=%s(time,x,p)\n'fname);
+    fprintf(fid,' %%%% Usage [F]=%s(time,x,p)\n',fname);
     fprintf(fid,' %%%% x: %i state variable values (species)\n',nx);
     fprintf(fid,' %%%% p: %i parameter values (e.g. kinetic coefficients)\n',np);
     fprintf(fid,' %%%% state variables:\n');
     fprintf(fid,' %%%%  %s\n',M.StateVariableNames{:});
     fprintf(fid,' %%%% parameters:\n');
     fprintf(fid,' %%%%  %s\n',M.ParameterNames{:});
-    fprintf(fid,'\n')
+    fprintf(fid,'\n');
+    fprintf(fid,' assert(length(x)==%i);\n',nx);
+    fprintf(fid,' assert(length(p)==%i);\n',np);
     fprintf(fid,' F=[...\n');
     fprintf(fid,'    %s;...\n',M.Flux{:});
     fprintf(fid,'   ];\n');
