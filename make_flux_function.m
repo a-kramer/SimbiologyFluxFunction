@@ -64,7 +64,7 @@ function [F,M]=make_flux_function(SimbiologyEquations,varargin)
       fname=sprintf('flux_of_%s_model_with_%i_parameters',M.StateVariableNames{1},np);
     else
       fname=varargin{2};
-    endif
+    end%if
     fid=fopen(strcat(fname,'.m'),'w');
     fprintf(fid,'function [F]=%s(time,x,p)\n',fname);
     fprintf(fid,' %%%% Usage [F]=%s(time,x,p)\n',fname);
